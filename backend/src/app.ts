@@ -21,6 +21,8 @@ const corsOptions: cors.CorsOptions = {
   allowedHeaders: ["content-type", "Authorization"],
 };
 
+app.use(cors(corsOptions));
+
 //cookie middleware
 app.use(cookieParser());
 
