@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotEnv from "dotenv";
+import { CORS_ORIGIN } from "./constants/env";
 
 dotEnv.config({
   path: "./.env",
@@ -16,7 +17,7 @@ app.use(express.static("public"));
 
 //cors middleware
 const corsOptions: cors.CorsOptions = {
-  origin: process.env.CORS_ORIGIN,
+  origin: CORS_ORIGIN,
   credentials: true,
   allowedHeaders: ["content-type", "Authorization"],
 };
