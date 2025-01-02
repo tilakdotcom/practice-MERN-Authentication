@@ -1,24 +1,29 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import { CLOUDINARY_API_KEY, CLOUDINARY_API_NAME, CLOUDINARY_API_SECRET } from "../constants/env";
+
+
 
 if (
-  !process.env.ClOUDINARY_API_NAME ||
-  !process.env.ClOUDINARY_API_KEY ||
-  !process.env.ClOUDINARY_API_SECRET
+  !CLOUDINARY_API_NAME ||
+  !CLOUDINARY_API_KEY ||
+  !CLOUDINARY_API_SECRET
 ) {
   console.error("Missing required environment variables for Cloudinary");
   console.log({
-  cloud_name: process.env.ClOUDINARY_API_NAME,
-  api_key: process.env.ClOUDINARY_API_KEY,
-  api_secret: process.env.ClOUDINARY_API_SECRET,
+  cloud_name: CLOUDINARY_API_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
   })
   process.exit(1); 
 }
+
+
 // Configuration
 cloudinary.config({
-  cloud_name: process.env.ClOUDINARY_API_NAME,
-  api_key: process.env.ClOUDINARY_API_KEY,
-  api_secret: process.env.ClOUDINARY_API_SECRET,
+  cloud_name: CLOUDINARY_API_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
 });
 
 //upload image to cloudinary

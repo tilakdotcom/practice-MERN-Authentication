@@ -20,4 +20,4 @@ export class ApiResponse {
     this.message = message || "Success OK";
     this.data = data;
   }
-}
+} 
