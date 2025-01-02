@@ -12,11 +12,6 @@ export const DATABASE_NAME = getEnv("DATABASE_NAME");
 export const PORT = getEnv("PORT","5000");
 export const NODE_ENV = getEnv("NODE_ENV","development");
 
-//resend details
-export const EMAIL_USER = getEnv("EMAIL_USER");
-export const EMAIL_PASSWORD = getEnv("EMAIL_PASSWORD");
-
-
 //cloudinary 
 export const CLOUDINARY_API_NAME = getEnv("CLOUDINARY_API_NAME");
 export const CLOUDINARY_API_KEY = getEnv("CLOUDINARY_API_KEY");
@@ -31,4 +26,3 @@ export const ACCESS_TOKEN_SECRET = getEnv("ACCESS_TOKEN_SECRET");
 export const ACCESS_TOKEN_EXPIRE = getEnv("ACCESS_TOKEN_EXPIRE");
 export const REFRESH_TOKEN_SECRET = getEnv("REFRESH_TOKEN_SECRET");
 export const REFRESH_TOKEN_EXPIRE = getEnv("REFRESH_TOKEN_EXPIRE");
-export const JWT_SECRET = getEnv("JWT_SECRET");

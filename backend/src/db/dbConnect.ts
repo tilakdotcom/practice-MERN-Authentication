@@ -1,5 +1,6 @@
-import { DATABASE_NAME, MONGO_URI } from "@/constants/env";
+
 import mongoose from "mongoose";
+import { DATABASE_NAME, MONGO_URI } from "../constants/env";
 
 const dbConnect = async () => {
   try {

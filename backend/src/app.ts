@@ -1,12 +1,13 @@
-import express, { Express } from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
 import dotEnv from "dotenv";
-import { CORS_ORIGIN } from "./constants/env";
-
 dotEnv.config({
   path: "./.env",
 });
+
+import express, { Express } from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+
+import { CORS_ORIGIN } from "./constants/env";
 
 const app: Express = express();
 
