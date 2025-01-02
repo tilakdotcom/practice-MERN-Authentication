@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 type AsyncHandler = (
   req: Request,
@@ -7,10 +7,14 @@ type AsyncHandler = (
 ) => Promise<any>;
 
 // Middleware to handle async functions in Express.js
-const asyncHandler = (handler: AsyncHandler): RequestHandler => {
-  return (req: Request, res: Response, next: NextFunction): void => {
-    Promise.resolve(handler(req, res, next)).catch(next);
-  };
+const asyncHandler = (handler: AsyncHandler): AsyncHandler => {
+  return async (req:Request, res:Response, next:NextFunction) =>{
+    try {
+      await handler(req, res, next);
+    } catch (error) {
+    next(error);
+    }
+  }
 };
 
 export default asyncHandler;
