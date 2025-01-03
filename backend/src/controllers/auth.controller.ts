@@ -1,16 +1,8 @@
 import { Request, Response } from "express";
 import asyncHandler from "../utils/asyncHandler";
-import { ApiError } from "@/utils/API/ApiError";
-import {
-  BAD_REQUEST,
-  INTERNAL_SERVER_ERROR,
-  OK,
-  CREATED,
-  NOT_FOUND,
-  UNAUTHORIZED,
-  FORBIDDEN,
-} from "@/constants/statusCode";
-import User from "@/models/user.model";
+import { ApiError } from "../utils/API/ApiError";
+import User from "../models/user.model";
+import { ApiResponse } from "../utils/API/ApiResponse";
 
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
@@ -18,27 +10,33 @@ export const registerUser = asyncHandler(
 
     // Validate request body
     if (!name || !email || !password) {
-      throw new ApiError(BAD_REQUEST, "Please enter all fields");
+      throw new ApiError(400, "Please enter all fields");
     }
-    // Check if email already exists
-    const userExists = await User.findOne(email);
-    if (userExists) {
-      throw new ApiError(BAD_REQUEST, "User already exists");
+    try {
+      // Check if email already exists
+      const userExists = await User.findOne(email);
+      if (userExists) {
+        throw new ApiError(400, "User already exists");
+      }
+      // Create new user
+      const user = new User({
+        name,
+        email,
+        password,
+      });
+      user.save();
+
+      user.password = "";
+
+      return res.status(201).json(
+        new ApiResponse({
+          statusCode: 201,
+          message: "User registered successfully",
+          data: { user },
+        })
+      );
+    } catch (error) {
+      throw new ApiError(500, " Error in creating user ");
     }
-
-    const verifyCode = 10000;
-
-    const tenDays = Date.now() + 10 * 60 * 60 * 1000;
-    // Create new user
-    const user = new User({
-      name,
-      email,
-      password,
-      verifyToken: verifyCode,
-      verifyExpire: tenDays,
-    });
-
-    user.save({ validateBeforeSave: true });
-    
   }
 );

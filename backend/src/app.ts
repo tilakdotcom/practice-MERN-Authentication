@@ -34,8 +34,10 @@ app.use(errorHandler)
 
 // import routes and declarations
 import healthRoutes from "./routes/health.routes";
+import authRoutes from "./routes/auth.route";
 
 //  use routes
 app.use("/api/v1/health", healthRoutes);
+app.use("/api/v1/health", authRoutes);
 
 export { app };
