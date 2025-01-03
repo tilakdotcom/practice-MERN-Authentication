@@ -12,7 +12,6 @@ const generateToken = (
   secret: string,
   expire: string
 ) => {
-  console.log("generating token: " + name + id + email + expire + secret);
   return jwt.sign(
     {
       id,

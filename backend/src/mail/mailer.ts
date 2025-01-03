@@ -2,7 +2,7 @@ import { ApiError } from "../utils/API/ApiError";
 import { mailSender, mailTransport } from "./mail.config";
 import { VERIFICATION_EMAIL_TEMPLATE } from "./MailTemplate";
 
-const sendVerificationEmail = (email: string, verificationCode: string) => {
+export const sendVerificationEmail = (email: string, verificationCode: string) => {
   const recipients = [email];
   try {
     mailTransport
@@ -23,4 +23,4 @@ const sendVerificationEmail = (email: string, verificationCode: string) => {
   }
 };
 
-export default sendVerificationEmail;
+

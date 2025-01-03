@@ -14,11 +14,10 @@ export interface IUser extends Document {
   password: string;
   verified: boolean;
   refreshToken: string;
- 
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
-  verifyToken?: string;
-  verifyExpire?: Date;
+  verifyToken: string;
+  verifyExpire: Date;
   createdAt: Date;
   updatedAt: Date;
   generateAccessToken: () => string;

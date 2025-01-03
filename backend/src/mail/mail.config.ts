@@ -12,3 +12,7 @@ export const mailSender = {
   address: USER_EMAIL,
   name: "MERN Authentication",
 };
+
+export const verifyCode = (): number => {
+  return Math.floor(Math.random() * 900000) + 100000;
+};
