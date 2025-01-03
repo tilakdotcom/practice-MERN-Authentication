@@ -4,9 +4,15 @@ import { ApiError } from "../utils/API/ApiError";
 import User from "../models/user.model";
 import { ApiResponse } from "../utils/API/ApiResponse";
 import getAccessAndRefreshToken from "../utils/getAccessAndRefreshToken";
-import { sendVerificationEmail, sendWelcomeEmail } from "../mail/mailer";
+import {
+  sendForgotPasswordEmail,
+  sendVerificationEmail,
+  sendWelcomeEmail,
+} from "../mail/mailer";
 import { verifyCode } from "../mail/mail.config";
 import { getCustomMinutes } from "../utils/customDate";
+import { v4 as uuidv4 } from "uuid";
+import { CLIENT_URI } from "../constants/env";
 
 //register
 export const registerUser = asyncHandler(
@@ -92,11 +98,10 @@ export const loginUser = asyncHandler(
       if (!user.verified) {
         const code = verifyCode();
         user.verifyToken = code.toString();
-        user.verifyExpire = getCustomMinutes(15)
+        user.verifyExpire = getCustomMinutes(15);
         await user.save({ validateBeforeSave: false });
         sendVerificationEmail(email, code.toString());
       }
-
 
       return res
         .status(200)
@@ -173,7 +178,7 @@ export const verifyEmail = asyncHandler(
       if (!user) {
         throw new ApiError(404, "User not found");
       }
-      
+
       if (user.verifyExpire && user.verifyExpire.getTime() < Date.now()) {
         throw new ApiError(401, "Token expired");
       }
@@ -187,7 +192,7 @@ export const verifyEmail = asyncHandler(
       user.verifyToken = undefined;
       user.verified = true;
       await user.save({ validateBeforeSave: false });
-      sendWelcomeEmail(user.name, user.email)
+      sendWelcomeEmail(user.name, user.email);
 
       return res.json(
         new ApiResponse({
@@ -198,6 +203,40 @@ export const verifyEmail = asyncHandler(
       );
     } catch (error) {
       console.log("Error in verify image", error);
+      next(error);
+    }
+  }
+);
+
+export const forgotPassword = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+    //validation
+    if (!email) {
+      throw new ApiError(400, "Please enter email");
+    }
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new ApiError(404, "User not found");
+      }
+      const code = uuidv4();
+
+      user.resetPasswordToken = code;
+      user.resetPasswordExpire = getCustomMinutes(15);
+
+      await user.save({ validateBeforeSave: false });
+      const url = `${CLIENT_URI}/reset-password/${code}`;
+      sendForgotPasswordEmail(url, email);
+
+      return res.json(
+        new ApiResponse({
+          statusCode: 200,
+          message: "Reset password link sent successfully",
+        })
+      );
+    } catch (error) {
+      console.log("Error in forgot password", error);
       next(error);
     }
   }
