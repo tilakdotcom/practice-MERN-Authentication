@@ -3,6 +3,7 @@ import asyncHandler from "../utils/asyncHandler";
 import { ApiError } from "../utils/API/ApiError";
 import { ACCESS_TOKEN_SECRET } from "../constants/env";
 import User from "../models/user.model";
+import { NextFunction, Request, Response } from "express";
 
 // Extend Request to include `user`
 declare global {
@@ -13,7 +14,7 @@ declare global {
   }
 }
 
-const verifyUser = asyncHandler(async (req, _res, next) => {
+const verifyUser = asyncHandler(async (req: Request, _res: Response, next: NextFunction) => {
   try {
     const token =
       req.cookies?.accessToken ||

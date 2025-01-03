@@ -13,13 +13,17 @@ export interface IUser extends Document {
   email: string;
   password: string;
   verified: boolean;
-  comparePassword: (password: string) => Promise<boolean>;
+  refreshToken: string;
+ 
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
   verifyToken?: string;
   verifyExpire?: Date;
   createdAt: Date;
   updatedAt: Date;
+  generateAccessToken: () => string;
+  generateRefreshToken: () => string; 
+  comparePassword: (password: string) => Promise<boolean>;
 }
 
 const userSchema = new Schema<IUser>(
@@ -59,6 +63,10 @@ const userSchema = new Schema<IUser>(
     verifyExpire: {
       type: Date,
     },
+    refreshToken:{
+      type: String,
+      default: null,
+    }
   },
   {
     timestamps: true,
