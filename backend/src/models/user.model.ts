@@ -7,6 +7,13 @@ export interface IUser extends Document {
   password: string;
   verified: boolean;
   comparePassword: (password: string) => Promise<boolean>;
+  resetPasswordToken?: string;
+  resetPasswordExpire?: Date;
+  verifyToken?: string;
+  verifyExpire?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+
 }
 
 const userSchema = new Schema<IUser>(
@@ -34,6 +41,19 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpire: {
+      type: Date,
+    },
+    verifyToken: {
+      type: String,
+    },
+    verifyExpire: {
+      type: Date,
+    },
+
   },
   {
     timestamps: true,
@@ -52,6 +72,8 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.comparePassword = async function (password: string) {
   return await passwordValidator(password, this.password);
 }
+
+
 
 const User = mongoose.model<IUser>("User", userSchema);
 
