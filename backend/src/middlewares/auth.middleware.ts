@@ -4,6 +4,15 @@ import { ApiError } from "../utils/API/ApiError";
 import { ACCESS_TOKEN_SECRET } from "../constants/env";
 import User from "../models/user.model";
 
+// Extend Request to include `user`
+declare global {
+  namespace Express {
+    interface Request {
+      user?: Record<string, any>;
+    }
+  }
+}
+
 const verifyUser = asyncHandler(async (req, _res, next) => {
   try {
     const token =
@@ -31,6 +40,5 @@ const verifyUser = asyncHandler(async (req, _res, next) => {
     next(error);
   }
 });
-
 
 export default verifyUser;
