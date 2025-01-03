@@ -26,3 +26,9 @@ export const ACCESS_TOKEN_SECRET = getEnv("ACCESS_TOKEN_SECRET");
 export const ACCESS_TOKEN_EXPIRE = getEnv("ACCESS_TOKEN_EXPIRE");
 export const REFRESH_TOKEN_SECRET = getEnv("REFRESH_TOKEN_SECRET");
 export const REFRESH_TOKEN_EXPIRE = getEnv("REFRESH_TOKEN_EXPIRE");
+
+
+
+//mail
+export const MAILTRAP_TOKEN = getEnv("MAILTRAP_TOKEN");
+export const USER_EMAIL = getEnv("USER_EMAIL");

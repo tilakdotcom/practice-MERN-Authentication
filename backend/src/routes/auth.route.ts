@@ -10,7 +10,7 @@ router.route("/signup").post(registerUser)
 
 router.route("/login").post(loginUser)
 
-router.route("/logout").post(verifyUser ,logoutUser)
+router.route("/logout").get(verifyUser ,logoutUser)
 
 
 
