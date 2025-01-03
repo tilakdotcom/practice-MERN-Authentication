@@ -13,7 +13,6 @@ export interface IUser extends Document {
   verifyExpire?: Date;
   createdAt: Date;
   updatedAt: Date;
-
 }
 
 const userSchema = new Schema<IUser>(
@@ -53,7 +52,6 @@ const userSchema = new Schema<IUser>(
     verifyExpire: {
       type: Date,
     },
-
   },
   {
     timestamps: true,
@@ -71,9 +69,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.comparePassword = async function (password: string) {
   return await passwordValidator(password, this.password);
-}
-
-
+};
 
 const User = mongoose.model<IUser>("User", userSchema);
 

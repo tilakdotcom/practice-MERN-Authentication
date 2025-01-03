@@ -38,6 +38,6 @@ import authRoutes from "./routes/auth.route";
 
 //  use routes
 app.use("/api/v1/health", healthRoutes);
-app.use("/api/v1/health", authRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 export { app };

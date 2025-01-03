@@ -5,7 +5,7 @@ import { registerUser } from "../controllers/auth.controller";
 
 const router = Router();
 
-router.route("/signup").get(registerUser)
+router.route("/signup").post(registerUser)
 
 
 

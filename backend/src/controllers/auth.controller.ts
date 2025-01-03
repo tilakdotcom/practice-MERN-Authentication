@@ -1,11 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import asyncHandler from "../utils/asyncHandler";
 import { ApiError } from "../utils/API/ApiError";
 import User from "../models/user.model";
 import { ApiResponse } from "../utils/API/ApiResponse";
+import { constants } from "buffer";
 
-export const registerUser = asyncHandler(
-  async (req: Request, res: Response) => {
+export const registerUser =  asyncHandler(
+  async (req: Request, res: Response,next: NextFunction) => {
     const { name, email, password } = req.body;
 
     // Validate request body
@@ -14,7 +15,7 @@ export const registerUser = asyncHandler(
     }
     try {
       // Check if email already exists
-      const userExists = await User.findOne(email);
+      const userExists = await User.findOne({email});
       if (userExists) {
         throw new ApiError(400, "User already exists");
       }
@@ -24,19 +25,21 @@ export const registerUser = asyncHandler(
         email,
         password,
       });
-      user.save();
 
-      user.password = "";
+
+      const savedUser = await user.save();
+      savedUser.password = "";
 
       return res.status(201).json(
         new ApiResponse({
           statusCode: 201,
           message: "User registered successfully",
-          data: { user },
+          data: { savedUser },
         })
       );
     } catch (error) {
-      throw new ApiError(500, " Error in creating user ");
+      // console.log(" Error in creating User", error);
+      next(error)
     }
   }
 );
