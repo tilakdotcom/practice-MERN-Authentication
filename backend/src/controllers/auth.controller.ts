@@ -4,8 +4,9 @@ import { ApiError } from "../utils/API/ApiError";
 import User from "../models/user.model";
 import { ApiResponse } from "../utils/API/ApiResponse";
 import getAccessAndRefreshToken from "../utils/getAccessAndRefreshToken";
-import { sendVerificationEmail } from "../mail/mailer";
+import { sendVerificationEmail, sendWelcomeEmail } from "../mail/mailer";
 import { verifyCode } from "../mail/mail.config";
+import { getCustomMinutes } from "../utils/customDate";
 
 //register
 export const registerUser = asyncHandler(
@@ -90,9 +91,10 @@ export const loginUser = asyncHandler(
       }
       if (!user.verified) {
         const code = verifyCode();
-        user.verifyToken = code.toLocaleString();
+        user.verifyToken = code.toString();
+        user.verifyExpire = getCustomMinutes(15)
         await user.save({ validateBeforeSave: false });
-        sendVerificationEmail(email, code.toLocaleString());
+        sendVerificationEmail(email, code.toString());
       }
 
 
@@ -153,7 +155,6 @@ export const logoutUser = asyncHandler(
   }
 );
 
-//verify-Email
 export const verifyEmail = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user?.id;
@@ -173,19 +174,20 @@ export const verifyEmail = asyncHandler(
         throw new ApiError(404, "User not found");
       }
       
-      if (user.verifyExpire.getTime() < Date.now()) {
+      if (user.verifyExpire && user.verifyExpire.getTime() < Date.now()) {
         throw new ApiError(401, "Token expired");
       }
 
       if (user.verifyToken !== code) {
-        throw new ApiError(401, "Invalid code");
+        throw new ApiError(400, "Invalid code");
       }
 
       //update user
-      user.verifyExpire = new Date(0);
-      user.verifyToken = "";
+      user.verifyExpire = undefined;
+      user.verifyToken = undefined;
       user.verified = true;
       await user.save({ validateBeforeSave: false });
+      sendWelcomeEmail(user.name, user.email)
 
       return res.json(
         new ApiResponse({
