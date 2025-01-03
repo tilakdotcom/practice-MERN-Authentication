@@ -1,5 +1,12 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { passwordValidator, passwwordHasher } from "../utils/bcrypt";
+import generateToken from "../utils/generateToken";
+import {
+  ACCESS_TOKEN_EXPIRE,
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRE,
+  REFRESH_TOKEN_SECRET,
+} from "../constants/env";
 
 export interface IUser extends Document {
   name: string;
@@ -69,6 +76,29 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.comparePassword = async function (password: string) {
   return await passwordValidator(password, this.password);
+};
+
+//tokens
+userSchema.methods.generateAccessToken = function () {
+  return generateToken(
+    {
+      id: this._id,
+      email: this.email,
+      name: this.name,
+    },
+    ACCESS_TOKEN_SECRET,
+    ACCESS_TOKEN_EXPIRE
+  );
+};
+
+userSchema.methods.generateRefreshToken = function () {
+  return generateToken(
+    {
+      id: this._id,
+    },
+    REFRESH_TOKEN_SECRET,
+    REFRESH_TOKEN_EXPIRE
+  );
 };
 
 const User = mongoose.model<IUser>("User", userSchema);

@@ -3,10 +3,9 @@ import asyncHandler from "../utils/asyncHandler";
 import { ApiError } from "../utils/API/ApiError";
 import User from "../models/user.model";
 import { ApiResponse } from "../utils/API/ApiResponse";
-import { constants } from "buffer";
 
-export const registerUser =  asyncHandler(
-  async (req: Request, res: Response,next: NextFunction) => {
+export const registerUser = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
     const { name, email, password } = req.body;
 
     // Validate request body
@@ -15,7 +14,7 @@ export const registerUser =  asyncHandler(
     }
     try {
       // Check if email already exists
-      const userExists = await User.findOne({email});
+      const userExists = await User.findOne({ email });
       if (userExists) {
         throw new ApiError(400, "User already exists");
       }
@@ -25,7 +24,6 @@ export const registerUser =  asyncHandler(
         email,
         password,
       });
-
 
       const savedUser = await user.save();
       savedUser.password = "";
@@ -38,8 +36,19 @@ export const registerUser =  asyncHandler(
         })
       );
     } catch (error) {
-      // console.log(" Error in creating User", error);
-      next(error)
+      console.log(" Error in creating User", error);
+      next(error);
     }
+  }
+);
+
+export const loginUser = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
+    // Validate request body
+    if (!email || !password) {
+      throw new ApiError(400, "Please enter all fields");
+    }
+    
   }
 );
