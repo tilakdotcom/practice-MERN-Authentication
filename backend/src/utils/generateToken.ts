@@ -8,9 +8,11 @@ interface user {
 
 const generateToken = (
   { email, id, name }: user,
-  expire: string,
-  secret: string
+
+  secret: string,
+  expire: string
 ) => {
+  console.log("generating token: " + name + id + email + expire + secret);
   return jwt.sign(
     {
       id,

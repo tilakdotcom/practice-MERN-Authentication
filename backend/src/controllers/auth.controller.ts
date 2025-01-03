@@ -5,6 +5,7 @@ import User from "../models/user.model";
 import { ApiResponse } from "../utils/API/ApiResponse";
 import getAccessAndRefreshToken from "../utils/getAccessAndRefreshToken";
 
+//register
 export const registerUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { name, email, password } = req.body;
@@ -46,10 +47,10 @@ export const registerUser = asyncHandler(
 );
 
 const cookieOptions = {
-  secure: true,
   httpOnly: true,
+  secure: true,
 };
-
+//login
 export const loginUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
@@ -80,7 +81,7 @@ export const loginUser = asyncHandler(
           },
         },
         { new: true }
-      ).select("password refreshToken");
+      ).select("-password -refreshToken");
 
       if (!userAddToken) {
         throw new ApiError(500, "Failed to update user token");
@@ -103,3 +104,36 @@ export const loginUser = asyncHandler(
     }
   }
 );
+
+
+//logout
+export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?._id;
+  if (!userId) {
+    throw new ApiError(404, "User not found");
+  }
+  const userNull = await User.findByIdAndUpdate(
+    userId,
+    {
+      $set: {
+        refreshToken: null,
+      },
+    },
+    { new: true }
+  );
+
+  //validation
+  if (!userNull) {
+    throw new ApiError(404, "User not found");
+  }
+
+  return res
+    .clearCookie("accessToken", cookieOptions)
+    .clearCookie("refreshToken", cookieOptions)
+    .json(
+      new ApiResponse({
+        statusCode: 200,
+        message: "User logged out successfully",
+      })
+    );
+});

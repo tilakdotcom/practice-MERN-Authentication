@@ -12,10 +12,13 @@ const getAccessAndRefreshToken = async (userId: any) => {
     const refreshToken = user.generateRefreshToken();
     //save refresh token in database
     await user.save({ validateBeforeSave: false });
+
+
     return { accessToken, refreshToken };
+
   } catch (error) {
     console.log("Error getting access token", error);
-    throw new ApiError(500, "Error getting refresh", error);
+    throw new ApiError(500, "Error getting refresh and access", error);
   }
 };
 
