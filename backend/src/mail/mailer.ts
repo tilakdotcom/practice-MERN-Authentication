@@ -2,7 +2,6 @@ import { ApiError } from "../utils/API/ApiError";
 import { mailSender, mailTransport } from "./mail.config";
 import {
   PASSWORD_RESET_REQUEST_TEMPLATE,
-  PASSWORD_RESET_SUCCESS_TEMPLATE,
   VERIFICATION_EMAIL_TEMPLATE,
   WELCOME_MESSAGE_TEMPLATE,
 } from "./MailTemplate";
@@ -74,23 +73,3 @@ export const sendForgotPasswordEmail = (email: string,url:string) => {
   }
 };
 
-export const sendPasswordSucessEmail = (email: string) => {
-  const recipients = [email];
-  try {
-    mailTransport
-      .sendMail({
-        from: mailSender,
-        to: recipients,
-        subject: "Successfully Reset Password",
-        html: PASSWORD_RESET_SUCCESS_TEMPLATE,
-        category: "Successfully Reset Password",
-      })
-      .then(console.log)
-      .catch(console.error);
-  } catch (error: any) {
-    console.error(
-      `Error in sendPasswordSucessEmail email to ${email}: ${error.message}`
-    );
-    throw new ApiError(500, `Error in sendPasswordSucessEmail email`);
-  }
-};
