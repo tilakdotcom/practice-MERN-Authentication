@@ -1,9 +1,10 @@
+import VerifyImagePage from "./pages/VerifyEmailPage"
 
 function App() {
 
   return (
     <>
-      <h1>App</h1>
+    <VerifyImagePage />
       
     </>
   )

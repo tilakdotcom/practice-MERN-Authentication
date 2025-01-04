@@ -28,7 +28,7 @@ const OTPInput = ({ length = 4, onComplete }: InputProps) => {
   };
 
   return (
-    <div className={`grid ${" grid-cols-"+length} gap-3`}>
+    <div className={`sm:grid flex flex-wrap ${"grid-cols-"+length} gap-3 `}>
       {Array.from({ length }, (_, index) => (
         <input
           key={index}
