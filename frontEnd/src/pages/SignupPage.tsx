@@ -54,7 +54,7 @@ export default function SignupPage() {
       <Form {...form}>
         <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full bg-blue-800 p-8 rounded-lg shadow-md md:space-y-3 space-y-2 h-auto"
+        className="w-full bg-green-800 p-8 rounded-lg shadow-md md:space-y-3 space-y-2 h-auto"
         >
         <h2 className="text-2xl font-bold text-center text-white ">
           Sign Up
@@ -72,7 +72,7 @@ export default function SignupPage() {
             </FormLabel>
             <FormControl>
             <Input
-              className="w-full px-4 py-2 rounded-md bg-blue-900 text-gray-100 border border-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none md:text-base"
+              className="w-full px-4 py-2 rounded-md bg-green-900 text-gray-100 border border-green-700 focus:ring-2 focus:ring-green-400 focus:outline-none md:text-base"
               placeholder="Enter your name"
               {...field}
             />
@@ -92,7 +92,7 @@ export default function SignupPage() {
             </FormLabel>
             <FormControl>
             <Input
-              className="w-full px-4 py-2 rounded-md bg-blue-900 text-gray-100 border border-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none md:text-base"
+              className="w-full px-4 py-2 rounded-md bg-green-900 text-gray-100 border border-green-700 focus:ring-2 focus:ring-green-400 focus:outline-none md:text-base"
               placeholder="Enter your email"
               {...field}
             />
@@ -113,7 +113,7 @@ export default function SignupPage() {
             <FormControl>
             <Input
               type="password"
-              className="w-full px-4 py-2 rounded-md bg-blue-900 text-gray-100 border border-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none md:text-base"
+              className="w-full px-4 py-2 rounded-md bg-green-900 text-gray-100 border border-green-700 focus:ring-2 focus:ring-green-400 focus:outline-none md:text-base"
               placeholder="Enter your password"
               {...field}
             />
@@ -126,8 +126,8 @@ export default function SignupPage() {
           <Button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 px-4 bg-blue-400 hover:bg-blue-500 text-white rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ease-linear ${
-            loading ? " cursor-not-allowed bg-blue-300" : ""
+          className={`w-full py-2 px-4 bg-green-400 hover:bg-green-500 text-white rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200 ease-linear ${
+            loading ? " cursor-not-allowed bg-green-300" : ""
           }`}
           >
           {loading ? "Wait" : "Sign Up"}
