@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -89,7 +88,7 @@ export default function VerifyEmailPage() {
             loading ? " cursor-not-allowed bg-green-300" : ""
           }`}
           >
-          {loading ? "Wait" : "Sign Up"}
+          {loading ? "Wait" : "Verify"}
           </Button>
         </div>
         </form>

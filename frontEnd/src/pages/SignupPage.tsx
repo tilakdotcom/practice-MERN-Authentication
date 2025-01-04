@@ -60,7 +60,7 @@ export default function SignupPage() {
           Sign Up
         </h2>
         <p className="text-center text-gray-200">
-          Create an account to access your income, expenses, and more.
+          Create your account
         </p>
         <FormField
           control={form.control}
