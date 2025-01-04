@@ -87,7 +87,7 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
          Reset Password
       </a>
     </div>
-    <p style="font-size: 1em; margin: 10px 0;">This link will expire in 1 hour for security reasons.</p>
+    <p style="font-size: 1em; margin: 10px 0;">This link will expire in 15 mins for security reasons.</p>
     <p style="font-size: 1em; margin: 20px 0;">Best regards,<br><strong>Your App Team</strong></p>
   </div>
   <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">

@@ -227,7 +227,8 @@ export const forgotPassword = asyncHandler(
 
       await user.save({ validateBeforeSave: false });
       const url = `${CLIENT_URI}/reset-password/${code}`;
-      sendForgotPasswordEmail(url, email);
+
+      sendForgotPasswordEmail(email,url);
 
       return res.json(
         new ApiResponse({
@@ -237,6 +238,42 @@ export const forgotPassword = asyncHandler(
       );
     } catch (error) {
       console.log("Error in forgot password", error);
+      next(error);
+    }
+  }
+);
+
+export const verifyPasswordToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+    if (!token) {
+      throw new ApiError(400, "Invalid token");
+    }
+    if (!newPassword) {
+      throw new ApiError(400, "Please enter new password");
+    }
+    try {
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpire: { $gt: Date.now() },
+      });
+
+      if (!user) {
+        throw new ApiError(404, "User not found or token expired");
+      }
+      user.password = newPassword;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+      return res.status(200).json(
+        new ApiResponse({
+          statusCode:200,
+          message: "User password changed successfully ",
+        })
+      )
+    } catch (error) {
+      console.log("Error in verify password token", error);
       next(error);
     }
   }

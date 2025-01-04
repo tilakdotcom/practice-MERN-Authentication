@@ -53,7 +53,7 @@ export const sendWelcomeEmail = (name: string, email: string) => {
   }
 };
 
-export const sendForgotPasswordEmail = (url: string, email: string) => {
+export const sendForgotPasswordEmail = (email: string,url:string) => {
   const recipients = [email];
   try {
     mailTransport
