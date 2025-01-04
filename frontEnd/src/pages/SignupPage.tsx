@@ -15,32 +15,33 @@ import { z } from "zod";
 import { useState } from "react";
 import { errorToast, successToast } from "@/utils/toast";
 import api from "@/utils/axiousInstance";
-import { LoginSchma } from "@/schemas/loginSchema";
+import { signupSchma } from "@/schemas/signupSchema";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [loading, setLoading] = useState<boolean>(false);
-  const form = useForm<z.infer<typeof LoginSchma>>({
-    resolver: zodResolver(LoginSchma),
+  const form = useForm<z.infer<typeof signupSchma>>({
+    resolver: zodResolver(signupSchma),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof LoginSchma>) {
+  async function onSubmit(values: z.infer<typeof signupSchma>) {
     setLoading(true);
 
     try {
-      const response = await api.post("/user/Login ", values);
+      const response = await api.post("/user/signup", values);
       //validation
       if (response.status !== 201) {
-        throw new Error("Login  Failed");
+        throw new Error("Signup Failed");
       }
-      successToast("Login Successful");
-      console.log("User Login Successful", response);
+      successToast("Signup Successful");
+      console.log("User Signup Successful", response);
     } catch (error) {
-      console.log("Login  Failed", error);
-      errorToast("Login Failed");
+      console.log("Signup Failed", error);
+      errorToast("Signup Failed");
       return;
     } finally {
       setLoading(false);
@@ -56,12 +57,31 @@ export default function LoginPage() {
         className="w-full bg-blue-800 p-8 rounded-lg shadow-md md:space-y-3 space-y-2 h-auto"
         >
         <h2 className="text-2xl font-bold text-center text-white ">
-           Login
+          Sign Up
         </h2>
         <p className="text-center text-gray-200">
           Create an account to access your income, expenses, and more.
         </p>
-  
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+          <FormItem>
+            <FormLabel className="block md:text-base font-medium text-gray-100 ">
+            Username
+            </FormLabel>
+            <FormControl>
+            <Input
+              className="w-full px-4 py-2 rounded-md bg-blue-900 text-gray-100 border border-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none md:text-base"
+              placeholder="Enter your name"
+              {...field}
+            />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="email"
