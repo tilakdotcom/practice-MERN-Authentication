@@ -1,10 +1,9 @@
-import SignupPage from "./pages/SignupPage"
 
 function App() {
 
   return (
     <>
-      <SignupPage />
+      <h1>App</h1>
       
     </>
   )
