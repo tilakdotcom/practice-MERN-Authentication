@@ -33,12 +33,9 @@ export default function SignupPage() {
     mutate: SignUp,
     isPending,
     isError,
+    isSuccess,
   } = useMutation({
     mutationFn: signupRequest,
-    onSuccess: () => {
-      navigate("/", { replace: true });
-      successToast("Signup Successful");
-    },
   });
 
   async function onSubmit(values: z.infer<typeof signupSchma>) {
@@ -46,10 +43,14 @@ export default function SignupPage() {
       SignUp(values);
     } catch (error) {
       console.log("Eror in signup", error);
-      if (isError) {
-        errorToast(" Failed to signup  ");
-      }
     }
+  }
+  if (isSuccess) {
+    successToast("Signup successful");
+    navigate("/login");
+  }
+  if (isError) {
+    errorToast(" Failed to signup  ");
   }
   return (
     <div className="lg:px-20 flex justify-center items-center px-10 py-5 my-auto">

@@ -32,16 +32,17 @@ export default function LoginPage() {
     mutate: LogIn,
     isPending,
     isError,
+    isSuccess
   } = useMutation({
     mutationFn: loginRequest,
-    onSuccess: () => {
-      navigate("/", { replace: true });
-      successToast("Login Successful");
-    },
   });
   async function onSubmit(values: z.infer<typeof LoginSchma>) {
     try {
       LogIn(values);
+      if(isSuccess){
+        navigate("/", { replace: true });
+        successToast("Login Successful");
+      }
     } catch (error) {
       if (isError) {
         errorToast("Failed to login");
