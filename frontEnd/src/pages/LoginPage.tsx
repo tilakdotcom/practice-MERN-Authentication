@@ -1,15 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { errorToast, successToast } from "@/lib/toast";
@@ -31,24 +23,21 @@ export default function LoginPage() {
   const {
     mutate: LogIn,
     isPending,
-    isError,
-    isSuccess
+
   } = useMutation({
     mutationFn: loginRequest,
-  });
-  async function onSubmit(values: z.infer<typeof LoginSchma>) {
-    try {
-      LogIn(values);
-      if(isSuccess){
-        navigate("/", { replace: true });
-        successToast("Login Successful");
-      }
-    } catch (error) {
-      if (isError) {
-        errorToast("Failed to login");
-      }
+    onSuccess: () => {
+      navigate("/", { replace: true });
+      successToast("Login Successful");
+    },
+    onError: (error) => {
+      errorToast("Failed to login");
       console.error(error);
-    }
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof LoginSchma>) {
+    LogIn(values);
   }
 
   return (
@@ -104,6 +93,7 @@ export default function LoginPage() {
                 </FormItem>
               )}
             />
+
             <div className="py-2 md:py-4">
               <Button
                 type="submit"

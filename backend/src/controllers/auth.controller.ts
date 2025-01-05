@@ -71,12 +71,12 @@ export const loginUser = asyncHandler(
       //check if user exists
       const user = await User.findOne({ email });
       if (!user) {
-        throw new ApiError(401, "Invalid credentials");
+        throw new ApiError(400, "Invalid credentials");
       }
       //check if password is correct
       const isPasswordMatch = await user.comparePassword(password);
       if (!isPasswordMatch) {
-        throw new ApiError(401, "Invalid credentials");
+        throw new ApiError(400, "Invalid credentials");
       }
       const { accessToken, refreshToken } = await getAccessAndRefreshToken(
         user._id
