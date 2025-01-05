@@ -3,10 +3,10 @@ import API from "@/config/axiousInstance";
 
 
 interface LoginData {
-  username: string;
+  email: string;
   password: string;
 }
 
 export const loginRequest = async (data: LoginData)=>{
-  API.post("/api/login", data)
+  API.post("/auth/login", data)
 }
