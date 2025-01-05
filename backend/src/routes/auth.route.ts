@@ -15,7 +15,7 @@ router.route("/verify-password-token/:token").patch(verifyPasswordToken)
 
 router.route("/logout").get(verifyUser ,logoutUser)
 
-router.route("/verify").get(verifyUser ,verifyEmail)
+router.route("/verify/:code").get(verifyUser ,verifyEmail)
 
 router.route("/refresh-access-token").get(verifyUser,refreshAccessToken)
 

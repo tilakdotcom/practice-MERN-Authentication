@@ -163,7 +163,7 @@ export const logoutUser = asyncHandler(
 export const verifyEmail = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user?.id;
-    const { code } = req.body;
+    const { code } = req.params;
     //validation
     if (!userId) {
       throw new ApiError(401, "unauthorized");
