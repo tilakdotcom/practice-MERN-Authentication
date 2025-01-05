@@ -21,6 +21,7 @@ const authSlice = createSlice({
       state.token = action.payload.token;
     },
     setUser(state: AuthType, action: PayloadAction<User>) {
+      // convert user into json 
       state.user = action.payload;
     },
     logout(state: AuthType) {
@@ -30,5 +31,7 @@ const authSlice = createSlice({
     },
   },
 });
+
+export const { setAuthTokens, setUser, logout } = authSlice.actions;
 
 export default authSlice.reducer;

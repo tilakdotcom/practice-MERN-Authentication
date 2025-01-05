@@ -1,9 +1,8 @@
 import { Navigate, Route, RouteProps } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { useAppSelector } from "@/store/hooks";
 
 const ProtectedRoute = (props: RouteProps) => {
-  const auth = useSelector((state: RootState) => state.auth);
+  const auth =  useAppSelector((state)=> state.auth)
 
   if (auth.user) {
     if (props.path === "/login") {

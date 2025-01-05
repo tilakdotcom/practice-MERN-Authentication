@@ -2,11 +2,11 @@ import API from "@/config/axiousInstance";
 import { LoginData, SignupData } from "@/types/apiRequestTypes";
 
 export const loginRequest = async (data: LoginData) => {
-  API.post("/auth/login", data);
+  return API.post("/auth/login", data);
 };
 
 export const signupRequest = async (data: SignupData) => {
-  API.post("/auth/signup", data);
+  return API.post("/auth/signup", data);
 };
 
 export const verifyEmailRequest = async (code: string) => {

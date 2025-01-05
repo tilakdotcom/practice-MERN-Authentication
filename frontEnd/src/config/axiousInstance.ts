@@ -10,12 +10,15 @@ const API: AxiosInstance = axios.create({
   baseURL: URI,
   withCredentials: true,
 });
-// API.interceptors.response.use(
-//   (response) => response.data,
-//   (error) => {
-//     const { statusCode, data } = error.response;
-//     return Promise.reject({ statusCode, ...data });
-//   }
-// );
+API.interceptors.response.use(
+  (response) => response.data,
+  (error) => {
+    const { status, data } = error.response;
+    return Promise.reject({ status,
+      message: data?.message || "An error occurred",
+      error: error.config.url,
+    });
+  }
+);
 
 export default API;

@@ -14,11 +14,12 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { errorToast, successToast } from "@/lib/toast";
 import { signupSchma } from "@/schemas/signupSchema";
-import { useMutation } from "@tanstack/react-query";
 import { signupRequest } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function SignupPage() {
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof signupSchma>>({
     resolver: zodResolver(signupSchma),
@@ -29,28 +30,28 @@ export default function SignupPage() {
     },
   });
 
-  const {
-    mutate: SignUp,
-    isPending,
-    isError,
-    isSuccess,
-  } = useMutation({
-    mutationFn: signupRequest,
-  });
-
   async function onSubmit(values: z.infer<typeof signupSchma>) {
+    setLoading(true);
+
     try {
-      SignUp(values);
+      const response = await signupRequest(values);
+      //validation
+      if (!response) {
+        return errorToast("Signup failed")
+      }
+      successToast("Signup Successful");
+      console.log("User Signup Successful", response);
+      navigate("/", { replace: true });
+
+      console.log("User Signup Successful", response);
     } catch (error) {
-      console.log("Eror in signup", error);
+      console.log("Signup  Failed", error);
+      errorToast("Signup Failed");
+      return;
+    } finally {
+      setLoading(false);
+      form.reset();
     }
-  }
-  if (isSuccess) {
-    successToast("Signup successful");
-    navigate("/login");
-  }
-  if (isError) {
-    errorToast(" Failed to signup  ");
   }
   return (
     <div className="lg:px-20 flex justify-center items-center px-10 py-5 my-auto">
@@ -127,12 +128,12 @@ export default function SignupPage() {
             <div className="py-2 md:py-4">
               <Button
                 type="submit"
-                disabled={isPending}
+                disabled={loading}
                 className={`w-full py-2 px-4 bg-green-400 hover:bg-green-500 text-white rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200 ease-linear ${
-                  isPending ? " cursor-not-allowed bg-green-300" : ""
+                  loading ? " cursor-not-allowed bg-green-300" : ""
                 }`}
               >
-                {isPending ? "Wait" : "Sign Up"}
+                {loading ? "Wait" : "Sign Up"}
               </Button>
             </div>
           </form>

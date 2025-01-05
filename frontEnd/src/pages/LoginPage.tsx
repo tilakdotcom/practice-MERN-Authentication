@@ -6,12 +6,16 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { errorToast, successToast } from "@/lib/toast";
 import { LoginSchma } from "@/schemas/loginSchema";
-import { useMutation } from "@tanstack/react-query";
 import { loginRequest } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAppDispatch } from "@/store/hooks";
+import { setUser } from "@/store/slice/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch()
   const form = useForm<z.infer<typeof LoginSchma>>({
     resolver: zodResolver(LoginSchma),
     defaultValues: {
@@ -20,24 +24,29 @@ export default function LoginPage() {
     },
   });
 
-  const {
-    mutate: LogIn,
-    isPending,
-
-  } = useMutation({
-    mutationFn: loginRequest,
-    onSuccess: () => {
-      navigate("/", { replace: true });
-      successToast("Login Successful");
-    },
-    onError: (error) => {
-      errorToast("Failed to login");
-      console.error(error);
-    },
-  });
-
   async function onSubmit(values: z.infer<typeof LoginSchma>) {
-    LogIn(values);
+    setLoading(true);
+        try {
+          const response = await loginRequest(values);
+          //validation
+          if (!response) {
+            return errorToast("Login failed")
+          }
+          //how to pass the data as json 
+
+          dispatch(setUser(response.data))
+          successToast("Login Successful");
+          console.log("User Login Successful", response);
+          navigate("/", { replace: true });
+          console.log("User Login Successful", response);
+        } catch (error) {
+          console.log("Login  Failed", error);
+          errorToast("Login Failed");
+          return;
+        } finally {
+          setLoading(false);
+          form.reset();
+        }
   }
 
   return (
@@ -97,12 +106,12 @@ export default function LoginPage() {
             <div className="py-2 md:py-4">
               <Button
                 type="submit"
-                disabled={isPending}
+                disabled={loading}
                 className={`w-full py-2 px-4 bg-green-400 hover:bg-green-500 text-white rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200 ease-linear ${
-                  isPending ? " cursor-not-allowed bg-green-300" : ""
+                  loading ? " cursor-not-allowed bg-green-300" : ""
                 }`}
               >
-                {isPending ? "Wait" : "Login"}
+                {loading ? "Wait" : "Login"}
               </Button>
             </div>
           </form>
