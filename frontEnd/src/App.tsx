@@ -1,17 +1,46 @@
-import { Route, Routes } from "react-router-dom"
-import HomePage from "./pages/HomePage"
-import LoginPage from "./pages/LoginPage"
-import SignupPage from "./pages/SignupPage"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-function App() {
+export default function App() {
+  const router = createBrowserRouter([
+    ...routesForAuthenticatedOnly,
+    ...routesForNotAuthenticatedOnly,
+    ...routesForPublic,
+  ]);
 
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-    </Routes>
-  )
+  return <RouterProvider router={router} />;
 }
 
-export default App
+const routesForNotAuthenticatedOnly = [
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />,
+  },
+];
+
+const routesForAuthenticatedOnly = [
+  {
+    path: "/",
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/yo",
+        element: <> Yoo HOO </>,
+      },
+    ],
+  },
+];
+
+const routesForPublic = [
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+];

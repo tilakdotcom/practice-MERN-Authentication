@@ -1,18 +1,12 @@
-import { Navigate, Route, RouteProps } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 
-const ProtectedRoute = (props: RouteProps) => {
-  const auth =  useAppSelector((state)=> state.auth)
-
+const ProtectedRoute = () => {
+  const auth = useAppSelector((state) => state.auth);
   if (auth.user) {
-    if (props.path === "/login") {
-      return <Navigate to={"/"} />;
-    }
-    return <Route {...props} />;
-  } else if (!auth.user) {
-    return <Navigate to={"/login"} />;
+    return <Outlet />;
   } else {
-    return <div>Not found</div>;
+    return <Navigate to="/login" replace={true} />;
   }
 };
 
