@@ -7,8 +7,6 @@ import express, { Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errorHandler";
-
-
 import { CORS_ORIGIN } from "./constants/env";
 
 const app: Express = express();
@@ -22,7 +20,6 @@ app.use(express.static("public"));
 const corsOptions: cors.CorsOptions = {
   origin: CORS_ORIGIN,
   credentials: true,
-  allowedHeaders: ["content-type", "Authorization"],
 };
 
 app.use(cors(corsOptions));

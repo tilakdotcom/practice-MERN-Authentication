@@ -19,7 +19,7 @@ export const CLOUDINARY_API_KEY = getEnv("CLOUDINARY_API_KEY");
 export const CLOUDINARY_API_SECRET = getEnv("CLOUDINARY_API_SECRET");
 
 //origin cors
-export const CORS_ORIGIN = getEnv("CORS_ORIGIN","*");
+export const CORS_ORIGIN = getEnv("CORS_ORIGIN");
 
 
 // tokens
