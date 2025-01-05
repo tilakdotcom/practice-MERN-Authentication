@@ -228,7 +228,7 @@ export const forgotPassword = asyncHandler(
       await user.save({ validateBeforeSave: false });
       const url = `${CLIENT_URI}/reset-password/${code}`;
 
-      sendForgotPasswordEmail(email,url);
+      sendForgotPasswordEmail(email, url);
 
       return res.json(
         new ApiResponse({
@@ -268,12 +268,50 @@ export const verifyPasswordToken = asyncHandler(
       await user.save({ validateBeforeSave: false });
       return res.status(200).json(
         new ApiResponse({
-          statusCode:200,
+          statusCode: 200,
           message: "User password changed successfully ",
         })
-      )
+      );
     } catch (error) {
       console.log("Error in verify password token", error);
+      next(error);
+    }
+  }
+);
+
+export const refreshAccessToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const refreshToken = req.cookies?.refreshToken;
+    const userId = req.user?._id;
+
+    //validation
+    if (!refreshToken || !userId) {
+      throw new ApiError(401, "Unauthorized");
+    }
+    try {
+      const user = await User.findById(userId).select("-password");
+      if (!user) {
+        throw new ApiError(401, "Unauthorized");
+      }
+      if (user.refreshToken !== refreshToken) {
+        throw new ApiError(401, "Unauthorized");
+      }
+      const newAccessToken = user.generateAccessToken();
+
+      user.refreshToken = "";
+
+      res
+        .status(200)
+        .cookie("accessToken", newAccessToken, cookieOptions)
+        .json(
+          new ApiResponse({
+            statusCode: 200,
+            message: "Access token refreshed successfully",
+            data: user,
+          })
+        );
+    } catch (error) {
+      console.log("Error in refreshAccessToken", error);
       next(error);
     }
   }

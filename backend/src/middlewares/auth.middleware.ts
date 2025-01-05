@@ -28,7 +28,7 @@ const verifyUser = asyncHandler(async (req: Request, _res: Response, next: NextF
     //token decode
     const decode: any = jwt.verify(token, ACCESS_TOKEN_SECRET);
     const user = await User.findById(decode?.id).select(
-      "refreshToken password"
+      "-refreshToken -password"
     );
 
     if (!user) {

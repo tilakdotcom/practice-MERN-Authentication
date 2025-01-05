@@ -1,7 +1,7 @@
 
 
 import { Router } from "express";
-import { forgotPassword, loginUser, logoutUser, registerUser, verifyEmail, verifyPasswordToken } from "../controllers/auth.controller";
+import { forgotPassword, loginUser, logoutUser, refreshAccessToken, registerUser, verifyEmail, verifyPasswordToken } from "../controllers/auth.controller";
 import verifyUser from "../middlewares/auth.middleware";
 
 const router = Router();
@@ -16,6 +16,8 @@ router.route("/verify-password-token/:token").patch(verifyPasswordToken)
 router.route("/logout").get(verifyUser ,logoutUser)
 
 router.route("/verify").get(verifyUser ,verifyEmail)
+
+router.route("/refresh-access-token").get(verifyUser,refreshAccessToken)
 
 
 
