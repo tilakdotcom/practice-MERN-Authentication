@@ -12,8 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useState } from "react";
-import { errorToast, successToast } from "@/utils/toast";
-import api from "@/utils/axiousInstance";
+import { errorToast, successToast } from "@/lib/toast";
+import api from "@/config/axiousInstance";
 import { passwordSchema } from "@/schemas/passwordSchma";
 
 export default function VerifyAndPasswordPage() {
