@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 
-const ProtectedRoute = () => {
+export const ProtectedRouteForAuthentic = () => {
   const auth = useAppSelector((state) => state.auth);
   if (auth.user) {
     return <Outlet />;
@@ -10,4 +10,11 @@ const ProtectedRoute = () => {
   }
 };
 
-export default ProtectedRoute;
+export const ProtectedRouteForNotAuthentic = () => {
+  const auth = useAppSelector((state) => state.auth);
+  if (!auth.user) {
+    return <Outlet />;
+  } else {
+    return <Navigate to="/" replace={true} />;
+  }
+}

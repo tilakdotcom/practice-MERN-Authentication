@@ -2,7 +2,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import ProtectedRoute from "./components/ProtectedRoute";
+import {
+  ProtectedRouteForAuthentic,
+  ProtectedRouteForNotAuthentic,
+} from "./components/ProtectedRoute";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -16,19 +19,23 @@ export default function App() {
 
 const routesForNotAuthenticatedOnly = [
   {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/signup",
-    element: <SignupPage />,
+    element: <ProtectedRouteForNotAuthentic />,
+    children: [
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/signup",
+        element: <SignupPage />,
+      },
+    ],
   },
 ];
 
 const routesForAuthenticatedOnly = [
   {
-    path: "/",
-    element: <ProtectedRoute />,
+    element: <ProtectedRouteForAuthentic />,
     children: [
       {
         path: "/yo",
@@ -41,6 +48,7 @@ const routesForAuthenticatedOnly = [
 const routesForPublic = [
   {
     path: "/",
+
     element: <HomePage />,
   },
 ];
