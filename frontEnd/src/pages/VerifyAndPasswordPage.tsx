@@ -13,11 +13,13 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useState } from "react";
 import { errorToast, successToast } from "@/lib/toast";
-import api from "@/config/axiousInstance";
 import { passwordSchema } from "@/schemas/passwordSchma";
+import { verifyPasswordTokenRequest } from "@/lib/api";
+import { useParams } from "react-router-dom";
 
 export default function VerifyAndPasswordPage() {
   const [loading, setLoading] = useState<boolean>(false);
+  const params = useParams();
   const form = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
@@ -25,14 +27,20 @@ export default function VerifyAndPasswordPage() {
     },
   });
 
+  const { token } = params;
+  if (!token) {
+    console.log("Please enter a valid token to verify your password");
+    return;
+  }
+
   async function onSubmit(values: z.infer<typeof passwordSchema>) {
     setLoading(true);
 
     try {
-      const response = await api.post("/user/VerifyEmail ", values);
+      const response = await verifyPasswordTokenRequest(token as string, values.password);
       //validation
-      if (response.status !== 201) {
-        throw new Error("Failed to reset password");
+      if (!response) {
+        errorToast("Failed to reset password");
       }
       successToast("Successfully password reset");
       console.log("Failed to reset password", response);

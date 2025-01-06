@@ -16,7 +16,7 @@ API.interceptors.response.use(
     const { status, data } = error.response;
     return Promise.reject({ status,
       message: data?.message || "An error occurred",
-      error: error.config.url,
+      error: error
     });
   }
 );

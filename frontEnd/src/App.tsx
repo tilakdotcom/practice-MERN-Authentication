@@ -10,6 +10,7 @@ import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import ResetPasswordLinkPage from "./pages/ResetPasswordLinkPage";
+import VerifyAndPasswordPage from "./pages/VerifyAndPasswordPage";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const routesForNotAuthenticatedOnly = [
           {
             path: "reset-password-link",
             element: <ResetPasswordLinkPage />,
+          },
+          {
+            path: "reset-password/:token",
+            element: <VerifyAndPasswordPage />,
           }
         ],
       },
