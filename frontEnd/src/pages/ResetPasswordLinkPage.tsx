@@ -14,8 +14,8 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useState } from "react";
 import { errorToast, successToast } from "@/lib/toast";
-import api from "@/config/axiousInstance";
 import { resetEmailSchema } from "@/schemas/resetEmail";
+import { forgotPasswordRequest } from "@/lib/api";
 
 export default function ResetPasswordLinkPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,11 +30,7 @@ export default function ResetPasswordLinkPage() {
     setLoading(true);
 
     try {
-      const response = await api.post("/user/ResetPasswordLink ", values);
-      //validation
-      if (response.status !== 201) {
-        throw new Error("Failed to send link");
-      }
+      const response = await forgotPasswordRequest(values.email)
       successToast(" link sent successfully");
       console.log("ResetPasswordLink Successful", response);
     } catch (error) {

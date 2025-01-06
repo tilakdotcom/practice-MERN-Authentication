@@ -9,6 +9,7 @@ import {
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
+import ResetPasswordLinkPage from "./pages/ResetPasswordLinkPage";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -36,6 +37,10 @@ const routesForNotAuthenticatedOnly = [
             path: "signup",
             element: <SignupPage />,
           },
+          {
+            path: "reset-password-link",
+            element: <ResetPasswordLinkPage />,
+          }
         ],
       },
     ],
@@ -54,12 +59,12 @@ const routesForAuthenticatedOnly = [
             path: "dashboard",
             element: <Dashboard />,
           },
+          {
+            path: "verify-email",
+            element: <VerifyEmailPage />,
+          },
         ],
       },
-      {
-        path:"verify-email",
-        element : <VerifyEmailPage />
-      }
     ],
   },
 ];
@@ -72,7 +77,7 @@ const routesForPublic = [
         path: "/",
         index: true,
         element: <HomePage />,
-      },
+      }
     ],
   },
 ];

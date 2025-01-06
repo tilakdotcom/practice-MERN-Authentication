@@ -26,7 +26,12 @@ export const verifyEmailRequest = async (code: string) => {
 };
 
 export const forgotPasswordRequest = async (email: string) => {
-  return API.post("/auth/forgot-password", { email });
+  const response= await API.post("/auth/forgot-password", { email });
+  if (!response) {
+    errorToast("Invalide Email");
+    return response;
+  }
+  return response.data
 };
 
 export const verifyPasswordTokenRequest = async (
