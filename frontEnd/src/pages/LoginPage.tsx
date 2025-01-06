@@ -1,7 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { errorToast, successToast } from "@/lib/toast";
@@ -15,7 +22,7 @@ import { setUser } from "@/store/slice/auth";
 export default function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof LoginSchma>>({
     resolver: zodResolver(LoginSchma),
     defaultValues: {
@@ -26,27 +33,27 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof LoginSchma>) {
     setLoading(true);
-        try {
-          const response = await loginRequest(values);
-          //validation
-          if (!response) {
-            return errorToast("Login failed")
-          }
-          //how to pass the data as json 
+    try {
+      const response = await loginRequest(values);
+      //validation
+      if (!response) {
+        return errorToast("Login failed");
+      }
+      //how to pass the data as json
 
-          dispatch(setUser(response.data))
-          successToast("Login Successful");
-          console.log("User Login Successful", response);
-          navigate("/", { replace: true });
-          console.log("User Login Successful", response);
-        } catch (error) {
-          console.log("Login  Failed", error);
-          errorToast("Login Failed");
-          return;
-        } finally {
-          setLoading(false);
-          form.reset();
-        }
+      dispatch(setUser(response.data));
+      successToast("Login Successful");
+      console.log("User Login Successful", response);
+      navigate("/dashboard", { replace: true });
+      console.log("User Login Successful", response);
+    } catch (error) {
+      console.log("Login  Failed", error);
+      errorToast("Login Failed");
+      return;
+    } finally {
+      setLoading(false);
+      form.reset();
+    }
   }
 
   return (

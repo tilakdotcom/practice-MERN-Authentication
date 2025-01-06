@@ -6,6 +6,8 @@ import {
   ProtectedRouteForAuthentic,
   ProtectedRouteForNotAuthentic,
 } from "./components/ProtectedRoute";
+import Layout from "./components/Layout";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -19,15 +21,21 @@ export default function App() {
 
 const routesForNotAuthenticatedOnly = [
   {
-    element: <ProtectedRouteForNotAuthentic />,
+    path: "/",
+    element: <Layout />,
     children: [
       {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/signup",
-        element: <SignupPage />,
+        element: <ProtectedRouteForNotAuthentic />,
+        children: [
+          {
+            path: "login",
+            element: <LoginPage />,
+          },
+          {
+            path: "signup",
+            element: <SignupPage />,
+          },
+        ],
       },
     ],
   },
@@ -35,11 +43,17 @@ const routesForNotAuthenticatedOnly = [
 
 const routesForAuthenticatedOnly = [
   {
-    element: <ProtectedRouteForAuthentic />,
+    path: "/",
+    element: <Layout />,
     children: [
       {
-        path: "/yo",
-        element: <> Yoo HOO </>,
+        element: <ProtectedRouteForAuthentic />,
+        children: [
+          {
+            path: "dashboard",
+            element: <Dashboard />,
+          },
+        ],
       },
     ],
   },
@@ -47,8 +61,13 @@ const routesForAuthenticatedOnly = [
 
 const routesForPublic = [
   {
-    path: "/",
-
-    element: <HomePage />,
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        index: true,
+        element: <HomePage />,
+      },
+    ],
   },
 ];

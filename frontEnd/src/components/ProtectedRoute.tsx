@@ -15,6 +15,6 @@ export const ProtectedRouteForNotAuthentic = () => {
   if (!auth.user) {
     return <Outlet />;
   } else {
-    return <Navigate to="/" replace={true} />;
+    return <Navigate to="/dashboard" replace={true} />;
   }
 }
