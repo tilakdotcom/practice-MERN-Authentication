@@ -1,5 +1,6 @@
 import API from "@/config/axiousInstance";
 import { LoginData, SignupData } from "@/types/apiRequestTypes";
+import { errorToast } from "./toast";
 
 export const loginRequest = async (data: LoginData) => {
   return API.post("/auth/login", data);
@@ -10,7 +11,18 @@ export const signupRequest = async (data: SignupData) => {
 };
 
 export const verifyEmailRequest = async (code: string) => {
-  return API.get(`/auth/verify/${code}`);
+  try {
+    const response = await API.get(`/auth/verify/${code}`);
+    if (response.status === 401) {
+      errorToast("Verification expired");
+      return;
+    }
+    return response.data;
+  } catch (error) {
+    console.log("Verification expired", error);
+    errorToast("Verification expiredd");
+    return;
+  }
 };
 
 export const forgotPasswordRequest = async (email: string) => {

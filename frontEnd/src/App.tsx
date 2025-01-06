@@ -8,6 +8,7 @@ import {
 } from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -55,6 +56,10 @@ const routesForAuthenticatedOnly = [
           },
         ],
       },
+      {
+        path:"verify-email",
+        element : <VerifyEmailPage />
+      }
     ],
   },
 ];

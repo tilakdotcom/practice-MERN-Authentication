@@ -13,11 +13,16 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useState } from "react";
 import { errorToast, successToast } from "@/lib/toast";
-import api from "@/config/axiousInstance";
 import { verifyTokenSchema } from "@/schemas/verifyTokenSchema";
+import { verifyEmailRequest } from "@/lib/api";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/store/hooks";
+import { setUser } from "@/store/slice/auth";
 
 export default function VerifyEmailPage() {
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const form = useForm<z.infer<typeof verifyTokenSchema>>({
     resolver: zodResolver(verifyTokenSchema),
     defaultValues: {
@@ -27,15 +32,13 @@ export default function VerifyEmailPage() {
 
   async function onSubmit(values: z.infer<typeof verifyTokenSchema>) {
     setLoading(true);
-
+    
     try {
-      const response = await api.post("/user/VerifyEmail ", values);
-      //validation
-      if (response.status !== 201) {
-        throw new Error("VerifyEmail  Failed");
-      }
+      const data = await verifyEmailRequest(values.token)
+      dispatch(setUser(data))
       successToast("VerifyEmail Successful");
-      console.log("User VerifyEmail Successful", response);
+      navigate('/dashboard') 
+      // console.log("User VerifyEmail Successful",response);
     } catch (error) {
       console.log("VerifyEmail  Failed", error);
       errorToast("VerifyEmail Failed");
