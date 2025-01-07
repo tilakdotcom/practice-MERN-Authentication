@@ -4,6 +4,12 @@ import { useAppSelector } from "@/store/hooks";
 export const ProtectedRouteForAuthentic = () => {
   const auth = useAppSelector((state) => state.auth);
 
+  console.log(typeof(auth.user?.verified))
+
+  // if (auth.user?.verified == false) {
+  //   return <Navigate to="/verify-email" replace={true} />;
+  // } 
+
   if (auth.user) {
     return <Outlet />;
   } else {

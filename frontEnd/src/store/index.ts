@@ -1,4 +1,4 @@
-import { configureStore ,combineReducers} from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
   FLUSH,
   PAUSE,
@@ -16,14 +16,13 @@ const rootReducer = combineReducers({
   auth: authSlice,
 });
 
-const persistedReducer = persistReducer(
-  {
-    key: "root",
-    version: 1,
-    storage: storage,
-  },
-  rootReducer
-);
+const persistConfig = {
+  key: "root",
+  version: 1,
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
@@ -36,8 +35,7 @@ const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;
-
