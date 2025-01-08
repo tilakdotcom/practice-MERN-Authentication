@@ -5,7 +5,8 @@ import SignupPage from "./pages/SignupPage";
 import {
   ProtectedRouteForAuthentic,
   ProtectedRouteForNotAuthentic,
-} from "./components/ProtectedRoute";
+  ProtectedRouteForNotVerified,
+} from "./lib/ProtectedRoute";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
@@ -45,7 +46,7 @@ const routesForNotAuthenticatedOnly = [
           {
             path: "reset-password/:token",
             element: <VerifyAndPasswordPage />,
-          }
+          },
         ],
       },
     ],
@@ -65,8 +66,13 @@ const routesForAuthenticatedOnly = [
             element: <Dashboard />,
           },
           {
-            path: "verify-email",
-            element: <VerifyEmailPage />,
+            element: <ProtectedRouteForNotVerified />,
+            children: [
+              {
+                path: "verify-email",
+                element: <VerifyEmailPage />,
+              },
+            ],
           },
         ],
       },
@@ -82,7 +88,7 @@ const routesForPublic = [
         path: "/",
         index: true,
         element: <HomePage />,
-      }
+      },
     ],
   },
 ];
