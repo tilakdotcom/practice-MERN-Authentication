@@ -46,5 +46,13 @@ export const logoutRequest = async () => {
 };
 
 export const refreshTokenRequest = async () => {
-  return API.get("/auth/refresh-token");
+  try {
+    const response = await API.get("/auth/refresh-access-token");
+    if (response.status === 401) {
+      throw new Error("Refresh token expired");
+    }
+    console.log("Refresh token request completed successfully for " , response)
+  } catch (error) {
+    console.log("Error refreshing token", error);
+  }
 };
